@@ -1,5 +1,10 @@
 # TDT4265-Snow-pole-detection
 
+
+### v1: yolov12
+- train3: small model 250 epochs
+- v2
+
 ### Hva skal modellene trenes og testes på
 
 Virker som det er en innlevering for kun RGB, og en innlevering for kun LIDAR. Altså ikke relevant å lage en kombinert modell
