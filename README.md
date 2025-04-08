@@ -1,5 +1,14 @@
 # TDT4265-Snow-pole-detection
 
+### We modified the data.yaml file.
+Modified file
+
+train: images/train
+val: images/valid
+test: images/test
+
+nc: 1
+names: ['pole']
 
 ### v1: yolov12
 - train3: small model 250 epochs
