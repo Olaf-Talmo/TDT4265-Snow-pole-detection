@@ -36,7 +36,7 @@ Head.py: feats, shapes = self._get_encoder_input(x)
 - Usikker på om det faktisk vil hjelpe modellen å enforce små bounding boxes, eller om det er noe modellen lærer seg etterhvert uansett.
 Derfor vil jeg prøve å visualisere, i.e. plotte, alle bounding boxene, også de som er rejected. Dersom nesten alle de som er rejected har riktig form str, er det ikke behov for å gjøre noe. 
 
-
+train_lidar_1 - første trening med liten endring i loss funksjon
 
 
 
