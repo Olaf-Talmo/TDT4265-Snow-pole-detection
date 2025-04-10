@@ -32,6 +32,12 @@ Virker som det er en innlevering for kun RGB, og en innlevering for kun LIDAR. A
 Størrelse, dimensjon og plassering av anchor boksene er ikke hardkodet. De defineres dynamisk basert på et featuremap. 
 Head.py: feats, shapes = self._get_encoder_input(x)
 
+### Ideer
+- Usikker på om det faktisk vil hjelpe modellen å enforce små bounding boxes, eller om det er noe modellen lærer seg etterhvert uansett.
+Derfor vil jeg prøve å visualisere, i.e. plotte, alle bounding boxene, også de som er rejected. Dersom nesten alle de som er rejected har riktig form str, er det ikke behov for å gjøre noe. 
+
+
+
 
 
 
