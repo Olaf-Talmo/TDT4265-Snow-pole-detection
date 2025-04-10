@@ -52,7 +52,7 @@ Derfor vil jeg prøve å visualisere, i.e. plotte, alle bounding boxene, også d
 - modified_loss_olaf_1: Loss function changed to penalize deviations from 0.25 aspect ratio, quadratic with weight 10. In loss.py. Neglictable difference. 
 - modified_augmentation_olaf. Endret box_candidates() i augmentation.py slik at bounding boxes som har aspect ratio > 0.25 rejectes. Sligthly more long and thin boxes, but not a lot. And worse performance overall
 
-
+train_lidar_1 - første trening med liten endring i loss funksjon
 
 
 
