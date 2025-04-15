@@ -1,0 +1,6 @@
+Run Description - 2025-04-15 13:46:33
+Dir Name: cropped_medium_model_w=960
+Model: /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov5_our_files/yolov5/runs/train/exp7/weights/best.pt
+
+Description:
+Cropped medium yolov5 model with img 960, to preserve resolution

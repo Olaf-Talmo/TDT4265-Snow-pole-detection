@@ -1,0 +1,7 @@
+Run Description - 2025-04-15 11:50:41
+Dir Name: plain_medium_model
+Model: /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov5_our_files/yolov5/runs/train/exp4/weights/best.pt
+
+Description:
+Plain medium model, 250 epochs as before, early stopping = 15. 
+No cropped images

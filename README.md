@@ -14,9 +14,9 @@ names: ['pole']
 
 ------------------- 2:
 
-train: home/omtalmo/Olaf_TTK4265//Poles/rgb/images/train
-val: home/omtalmo/Olaf_TTK4265//Poles/rgb/images/valid
-test: home/omtalmo/Olaf_TTK4265//Poles/rgb/images/test
+train: /home/omtalmo/Olaf_TTK4265//Poles/rgb/images/train
+val: /home/omtalmo/Olaf_TTK4265//Poles/rgb/images/valid
+test: /home/omtalmo/Olaf_TTK4265//Poles/rgb/images/test
 
 nc: 1
 names: ['pole']
@@ -38,15 +38,13 @@ Virker som det er en innlevering for kun RGB, og en innlevering for kun LIDAR. A
 
 ### Oppgaver / Ideer
 
-- Fjern øverste halvdel av bildet. Brøtestikkene er jo aldri der. Og hvis de er det så er de så små at de ikke oppdages uansett.
-Bør være en god løsning dersom vi kan anta at kamerates posisjon og vinkel ikke endrer seg. Det er vel som regel tilfelle i real life? Da er beskjæring en del av å kalibrere modellen til kamera setuppet. Burde analysere y-pos til brøtestikkene for å avgjøre hvor vi skal beskjære.
-Resultat: Høyde-analyse i label_anlysis.ipynb. Det er ingen brøtestikker innenfor øvre 40% av bildet. --> Vi cropper de øverste 40%, både på trening og inference. All data som kan fjernes uten av vi fjerner relevant informasjon må jo være bra. 
-Egentlig bør dette kunne implementers dynamisk uten tilgang på ground truth, fordi i dette tilfellet er det ikke risiko for å plutselig predikere en brøtestick helt øverst i bildet.
-- Se mer på pre-prossessering av bilder. Kan være mer sånne ting ^. Øke kontrast bør funke? Legge på fargefilter så rødt blir ekstra tydelig? Alle sånne ting er gode løsninger dersom de kan generaliseres, i.e. ikke bare gjelder disse bildene. F.eks, si at 50% av brøytestikker er røde. Da kan et rødfilter være fornuftig, selv om modellen fortsatt bør kunne håndtere brune og svarte stikker.
-- Lage syntetisk data
-- Fortsette med brøytestick analyse. Lag statistikk plots som viser forhold mellom høyde på brøytestick og y-posisjon. Samme med x-posisjon, men i stedet for absolutt tar jeg her avstand fra midten. 
-- Implementere annen arkitektur, f.eks yolov5, som bruker anchor-boxes og definerer str og pos eksplisitt. Kanskje cdd og.
+- Endre inference funksjonene så de kun lagrer de to førte bildene. Alle bildene tar for mye lagringsplass. 
+- Kjøre alt på nytt med bedre oppløsning på inference bilder, kanksje 1536 isteden for 640. Bør ha myyye å si. Bruke benchmarking til å se hvor mye tid det koster oss. Hvordan bør vi bruke tiden, på større modell eller bedre oppløsning?
+- Se mer på pre-prossessering av bilder. Øke kontrast bør funke? Legge på fargefilter så rødt blir ekstra tydelig? Alle sånne ting er gode løsninger dersom de kan generaliseres, i.e. ikke bare gjelder disse bildene. F.eks, si at 50% av brøytestikker er røde. Da kan et rødfilter være fornuftig, selv om modellen fortsatt bør kunne håndtere brune og svarte stikker.
+- Lage syntetisk data. Utforske cut and paste method
+- Implementere CDD
 - Debugge loss funksjon endringer. Prøve CARLosses: https://pdfs.semanticscholar.org/3ed9/298851a85e6ee2d9568266fc8c64fcc4ebf3.pdf?_gl=1*s2zpg1*_gcl_au*NzIxMjEwMzY3LjE3NDQ0NTAzOTA.*_ga*MTc0NzAxNjM3MS4xNzQ0NDUwMzky*_ga_H7P4ZT52H5*MTc0NDQ1MDM5MS4xLjEuMTc0NDQ1MDYzNC40OC4wLjA.
+- Implementere dynamisk confidence treshold for inference, i.e. kalibrere inference slik at sjansen for at en deteksjon er en falsk positiv er 5%, altså standard. Nå er det så store variasjoner i hvor confidente de ulike modellene er, at det er vanskelig å sammenligne dem. 
 
 ### Modifisert infernece: Hvrofor det er uaktuelt
 
@@ -65,6 +63,13 @@ Derfor er ikke benchamarking.ipynb så aktuelt lenger, så har ikke laget en yol
 
 ## Runs
 
+### Observasjoner
+- v5 er mer confident enn v12. 
+- v12 predikerer mye smalere bokser fra start av.
+- Cropping gjør modellene dårligere (må være fordi himmelen er kontekst eller noe?)
+- Å øke oppløsning på treningsbildene 640 --> 1536 gjør ikke nødvendigvis modellen bedre på 640 test-bilder. Blir god på det man trener på. 
+
+
 ### YOLO v12
 
 - train3_normal: small model with 250 epochs. Normal yolo. Basic yolo trained on this dataset
@@ -73,9 +78,26 @@ Derfor er ikke benchamarking.ipynb så aktuelt lenger, så har ikke laget en yol
 
 train_lidar_1 - første trening med liten endring i loss funksjon
 
+- Plain small model
+- Plain medium model
+- Plain large model
+
+(Continue with best)
+
+- Cropped images
+- Loss function
+- Augmentation
+
 ### Yolo v5
 
+- Plain small model
+- Plain medium model
+- Plain large model
 
+(Continue with best)
+
+- Cropped images
+- Different img hyperparameter
 
 ### Yolov5 Autoanchors returned these anchors:
 
@@ -91,5 +113,20 @@ train_lidar_1 - første trening med liten endring i loss funksjon
 
 
 Konklusjon: Ser bra ut, ingen grunn til å hardkode dem. 
+
+NB: Fikk: "WARNING: Extremely small objects found: 15 of 392 labels are <3 pixels in size"
+Er kanskje viktig å beholde høy oppløsing i trening (og inference?) for å kunne detekte små poles. 
+Juster hyperparameter img i yolov5. 
+Bildene våre har bredde = 1960 pixels. 
+
+
+## Generating synthetic images
+Possible approaches
+- GAN's. very good, but complicated, possibly not ideal for bounding boxes. 
+- Use dall-e 3. The problem here is that its difficoult to iterate on the same image: If you ask dall-e to generate an image of a pole with a box around, it does that. But if you ask it to generate a picture of a pole, and then ask it to generate the same picture only with a box around the pole, the box location is wrong. 
+Generate synthetic images with boxes around them: Detect box positions and create labels. use ai photoshop to remove box from picture. 
+This can be fully automated, and the chatgpt api is only 0.08 USD per image. 
+Conclusion: Not a good solution, as the bounding boxes are slightly wrong and will likely confuse the model more than help it. or so I think... It is a lot of work for something that may have no effect, or negative effect.
+- generate heatmap of box position. Generate a formula for pole height vs y-position in image. Paste pole on different backgrounds according to the heatmap and height function. Will look unnatural
 
 

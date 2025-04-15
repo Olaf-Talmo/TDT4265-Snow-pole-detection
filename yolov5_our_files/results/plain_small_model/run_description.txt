@@ -1,0 +1,9 @@
+Run Description - 2025-04-15 11:30:11
+Dir Name: plain_small_model
+Model: /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov5_our_files/yolov5/runs/train/exp2/weights/best.pt
+
+Description:
+helt basic yolov5 small model
+250 epochs
+early stopping = 15, som førte til stop etter kun 50 epochs ca. 
+Ikke croppede bilder

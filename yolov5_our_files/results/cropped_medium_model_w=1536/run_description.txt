@@ -1,0 +1,6 @@
+Run Description - 2025-04-15 14:16:17
+Dir Name: cropped_medium_model_w=1536
+Model: /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov5_our_files/yolov5/runs/train/exp8/weights/best.pt
+
+Description:
+using img 1536 when training model, still yolov5 with othervise deafoult hyperparams

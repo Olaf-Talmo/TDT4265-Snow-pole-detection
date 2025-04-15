@@ -1,0 +1,7 @@
+Run Description - 2025-04-15 13:49:33
+Dir Name: cropped_medium_model
+Model: /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov5_our_files/yolov5/runs/train/exp6/weights/best.pt
+
+Description:
+cropped medium model, yolov5
+everything as the plain models except cropping

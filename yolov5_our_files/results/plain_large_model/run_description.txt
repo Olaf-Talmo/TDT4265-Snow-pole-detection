@@ -1,0 +1,8 @@
+Run Description - 2025-04-15 12:38:03
+Dir Name: plain_large_model
+Model: /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov5_our_files/yolov5/runs/train/exp5/weights/best.pt
+
+Description:
+plain large model. 
+Same as other plain models
+Took 37 minutes to train!
