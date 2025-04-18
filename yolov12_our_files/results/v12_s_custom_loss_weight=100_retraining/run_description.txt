@@ -1,0 +1,6 @@
+Run Description - 2025-04-18 11:59:30
+Dir Name:    v12_s_custom_loss_weight=100_retraining
+Model:       /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov12_our_files/yolov12/yolov12/runs/detect/train3/weights/best.pt
+
+Description:
+Retraining the w=100 model with normal cost function and 250 epochs

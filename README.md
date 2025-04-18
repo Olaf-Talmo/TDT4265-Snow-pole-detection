@@ -46,6 +46,17 @@ Virker som det er en innlevering for kun RGB, og en innlevering for kun LIDAR. A
 - Debugge loss funksjon endringer. Prøve CARLosses: https://pdfs.semanticscholar.org/3ed9/298851a85e6ee2d9568266fc8c64fcc4ebf3.pdf?_gl=1*s2zpg1*_gcl_au*NzIxMjEwMzY3LjE3NDQ0NTAzOTA.*_ga*MTc0NzAxNjM3MS4xNzQ0NDUwMzky*_ga_H7P4ZT52H5*MTc0NDQ1MDM5MS4xLjEuMTc0NDQ1MDYzNC40OC4wLjA.
 - Implementere dynamisk confidence treshold for inference, i.e. kalibrere inference slik at sjansen for at en deteksjon er en falsk positiv er 5%, altså standard. Nå er det så store variasjoner i hvor confidente de ulike modellene er, at det er vanskelig å sammenligne dem. 
 
+### Modifisert loss function
+
+Undersøke om store brede bounding boxes har en funksjon, for eksempel å guide de tynne, iterere seg til mer og mer presisjon. 
+
+NB: Må cleare outputs og restarte kernel for at endringene i yolov12 skal brukes i trening. 
+
+Straffe: Stor Aspect ratio. Feil bokshøyde til y-posisjon ratio
+
+Trene to ganger: Først en gang for å sette riktig aspect ratio og pos på boksene. Og så en gang uten modified cost function. 
+
+
 ### Modifisert infernece: Hvrofor det er uaktuelt
 
 Ide: Fjerne boxer så tidlig som mulig i inference, før sansynlighet og klassifisering. Håpet at det kunne gjøre inferencen raskere. (ikke bedre. ) 
@@ -86,6 +97,7 @@ train_lidar_1 - første trening med liten endring i loss funksjon
 
 - Cropped images
 - Loss function
+- pre trained vs not
 - Augmentation
 
 ### Yolo v5
