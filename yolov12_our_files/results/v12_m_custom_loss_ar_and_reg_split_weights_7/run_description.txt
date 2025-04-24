@@ -1,0 +1,6 @@
+Run Description - 2025-04-24 17:27:29
+Dir Name:    v12_m_custom_loss_ar_and_reg_split_weights_7
+Model:       /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov12_our_files/yolov12/yolov12/runs/detect/train4/weights/best.pt
+
+Description:
+same but ar = 10 and area = 50
