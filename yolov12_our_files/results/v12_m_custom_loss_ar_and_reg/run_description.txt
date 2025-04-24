@@ -1,0 +1,10 @@
+Run Description - 2025-04-24 13:05:58
+Dir Name:    v12_m_custom_loss_ar_and_reg
+Model:       /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov12_our_files/yolov12/yolov12/runs/detect/train3/weights/best.pt
+
+Description:
+New loss function with modified ar and reg
+
+m size
+
+yolov12

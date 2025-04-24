@@ -1,0 +1,6 @@
+Run Description - 2025-04-24 15:00:35
+Dir Name:    v12_m_custom_loss_ar_and_reg_split_weights_2
+Model:       /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov12_our_files/yolov12/yolov12/runs/detect/train/weights/best.pt
+
+Description:
+Same as before, but using a o3 generated loss.py file that only punishes too high areas, not too small
