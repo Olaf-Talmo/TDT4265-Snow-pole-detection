@@ -1,0 +1,6 @@
+Run Description - 2025-04-30 14:31:20
+Dir Name:    retraining_on_custom_ar_3_hyp_tuning_imgsz=1280
+Model:       /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov12_our_files/yolov12/yolov12/runs/detect/train41/weights/best.pt
+
+Description:
+Retraining on 3. Hyperparamtertuning tune variables. Imgsz = 1280

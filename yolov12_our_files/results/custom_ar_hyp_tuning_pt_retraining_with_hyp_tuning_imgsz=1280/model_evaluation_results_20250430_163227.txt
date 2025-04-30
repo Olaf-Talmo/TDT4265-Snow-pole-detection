@@ -1,0 +1,18 @@
+===== YOLOv12 Model Evaluation Results =====
+Date: 2025-04-30 16:32:27
+Model: /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov12_our_files/yolov12/yolov12/runs/detect/train42/weights/best.pt
+
+===== Basic Metrics =====
+Total ground truth boxes: 113
+Total predictions: 102
+True positives: 100
+False positives: 2
+False negatives: 13
+Precision: 0.9804
+Recall: 0.8850
+F1 Score: 0.9302
+
+===== Additional Metrics =====
+Miss rate: 0.1150
+False discovery rate: 0.0196
+Total accuracy: 0.8696

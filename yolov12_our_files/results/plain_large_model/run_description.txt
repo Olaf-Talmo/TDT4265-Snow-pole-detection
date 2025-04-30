@@ -1,7 +1,0 @@
-Run Description - 2025-04-15 13:22:27
-Dir Name: plain_large_model
-Model: /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov12_our_files/yolov12/yolov12/runs/detect/train3/weights/best.pt
-
-Description:
-Plain large model, same hyperparameters
-250 epochs osv

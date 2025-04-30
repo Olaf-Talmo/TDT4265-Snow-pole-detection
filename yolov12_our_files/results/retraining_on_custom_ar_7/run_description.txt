@@ -1,0 +1,8 @@
+Run Description - 2025-04-30 10:14:37
+Dir Name:    retraining_on_custom_ar_7
+Model:       /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov12_our_files/yolov12/yolov12/runs/detect/train/weights/best.pt
+
+Description:
+Retraining on the customn loss function v7 model
+
+small model 250 epochs

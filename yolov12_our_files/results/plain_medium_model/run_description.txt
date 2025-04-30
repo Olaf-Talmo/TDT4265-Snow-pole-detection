@@ -1,7 +1,0 @@
-Run Description - 2025-04-15 12:42:14
-Dir Name: plain_medium_model
-Model: /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov12_our_files/yolov12/yolov12/runs/detect/train2/weights/best.pt
-
-Description:
-plain medium model
-took 37 minutes to run (when training another model simultaniusly)

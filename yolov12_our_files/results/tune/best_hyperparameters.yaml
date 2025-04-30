@@ -1,0 +1,16 @@
+# 40/40 iterations complete ✅ (1768.01s)
+# Results saved to /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov12/yolov12/runs/detect/tune
+# Best fitness=0.39381 observed at iteration 29
+# Best fitness metrics are {'metrics/precision(B)': 0.67835, 'metrics/recall(B)': 0.62832, 'metrics/mAP50(B)': 0.72543, 'metrics/mAP50-95(B)': 0.35697, 'val/box_loss': 1.74251, 'val/cls_loss': 1.53505, 'val/dfl_loss': 0.66022, 'fitness': 0.39381}
+# Best fitness model is /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov12/yolov12/runs/detect/train29
+# Best fitness hyperparameters are printed below.
+
+lr0: 0.00665
+lrf: 0.01318
+momentum: 0.85667
+weight_decay: 0.0006
+mosaic: 0.86616
+mixup: 0.0
+degrees: 0.0
+cls: 0.80177
+dfl: 1.0
