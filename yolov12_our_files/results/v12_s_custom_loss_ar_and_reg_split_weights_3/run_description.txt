@@ -1,8 +1,0 @@
-Run Description - 2025-04-24 15:39:04
-Dir Name:    v12_m_custom_loss_ar_and_reg_split_weights_3
-Model:       /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov12_our_files/yolov12/yolov12/runs/detect/train2/weights/best.pt
-
-Description:
-Again using the claude 3.7 version, but debugged, and clamped expected heght to 1%
-are pen: 25
-ar pen: 5

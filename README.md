@@ -1,6 +1,4 @@
-# TDT4265-Snow-pole-detection
-
-### We modified the data.yaml file.
+### The data.yaml file is modified (compared to the ones in cybele lab)
 Modified file
 
 ------------------- 1:
@@ -12,106 +10,18 @@ test: images/test
 nc: 1
 names: ['pole']
 
-------------------- 2:
+### Code walktrough
 
-train: /home/omtalmo/Olaf_TTK4265//Poles/rgb/images/train
-val: /home/omtalmo/Olaf_TTK4265//Poles/rgb/images/valid
-test: /home/omtalmo/Olaf_TTK4265//Poles/rgb/images/test
+The notebook inference_with_analysis.ipynb contains functions that performs inference and analyzes model performace and behaviur. Resulting plots and metrics are saved in the folder "results". The notebook is defined both in yolov12_our_files and in yolov12_our_files. The two versions have same functionality, but are tailored to different yolo models 
 
-nc: 1
-names: ['pole']
+The file modified_loss_function.txt is a modifed version of the yolov12 loss function (yolov12/ultralytics/utils/loss.py). Two terms are added to the classification loss function, which penalize all generated bounding boxes every iteration. 
 
-### Hva skal modellene trenes og testes på
+- Penalizes boxes with aspect ratio over 0.25 (The highest ar in the dataset). Penalization increases linear with the deviation from 0.25
+- Penalizes boxes with size that deviates from a regression line describing the y-position of the lower side of boxes vs their vertical length (height). The regression line basically looks at the y-position of a box, and then computes the optimal length of a box in that position. But we do not penalize length deviations directly, this leads to very wide boxes. Instead, we define a maximim aspect ratio of 0.25 and a minimum aspect ratio of 0.02, use these to calculate maximim and minimum acceptable areas of boxes based on their y-position, and penalize boxes that deviate from this limits. The penalization is linear.  
 
-Virker som det er en innlevering for kun RGB, og en innlevering for kun LIDAR. Altså ikke relevant å lage en kombinert modell
+benchamrking.ipynb measures the speed of inference. It does not count computations or measure the speed analytically, it simply measures the time it takes to perform inference. Thus it is dependent on the state of the computer (GPU memory usage), which must be identical across all tests
 
-### Domenekunnskap: Hva vet vi om brøtestikkene
-
-- De er alltid på siden av veien. 
-- De er alltid på nedre halvdel av bildet (hvertfall nedre 75%)
-- De er stort sett plassert ut med jevne mellomrom
-- Antar at bilen kjører fremover: Størrelse øker, og posisjonen går som regel lenger ned og ut til siden. (unntak ved  sving).
-- Store brøytestikker er ofte lavt og langt til siden på bildet. Små er ofte sentrert og langt oppe.
-- De er alltid lange og tynne, små variasjoner i form. 
-- De har stort sett samme farger, rød eller bambus med noe refleks.
-
-
-### Oppgaver / Ideer
-
-- Endre inference funksjonene så de kun lagrer de to førte bildene. Alle bildene tar for mye lagringsplass. 
-- Kjøre alt på nytt med bedre oppløsning på inference bilder, kanksje 1536 isteden for 640. Bør ha myyye å si. Bruke benchmarking til å se hvor mye tid det koster oss. Hvordan bør vi bruke tiden, på større modell eller bedre oppløsning?
-- Se mer på pre-prossessering av bilder. Øke kontrast bør funke? Legge på fargefilter så rødt blir ekstra tydelig? Alle sånne ting er gode løsninger dersom de kan generaliseres, i.e. ikke bare gjelder disse bildene. F.eks, si at 50% av brøytestikker er røde. Da kan et rødfilter være fornuftig, selv om modellen fortsatt bør kunne håndtere brune og svarte stikker.
-- Lage syntetisk data. Utforske cut and paste method
-- Implementere CDD
-- Debugge loss funksjon endringer. Prøve CARLosses: https://pdfs.semanticscholar.org/3ed9/298851a85e6ee2d9568266fc8c64fcc4ebf3.pdf?_gl=1*s2zpg1*_gcl_au*NzIxMjEwMzY3LjE3NDQ0NTAzOTA.*_ga*MTc0NzAxNjM3MS4xNzQ0NDUwMzky*_ga_H7P4ZT52H5*MTc0NDQ1MDM5MS4xLjEuMTc0NDQ1MDYzNC40OC4wLjA.
-- Implementere dynamisk confidence treshold for inference, i.e. kalibrere inference slik at sjansen for at en deteksjon er en falsk positiv er 5%, altså standard. Nå er det så store variasjoner i hvor confidente de ulike modellene er, at det er vanskelig å sammenligne dem. 
-
-### Modifisert loss function
-
-Undersøke om store brede bounding boxes har en funksjon, for eksempel å guide de tynne, iterere seg til mer og mer presisjon. 
-
-NB: Må cleare outputs og restarte kernel for at endringene i yolov12 skal brukes i trening. 
-
-Straffe: Stor Aspect ratio. Feil bokshøyde til y-posisjon ratio
-
-Trene to ganger: Først en gang for å sette riktig aspect ratio og pos på boksene. Og så en gang uten modified cost function. 
-
-
-### Modifisert infernece: Hvrofor det er uaktuelt
-
-Ide: Fjerne boxer så tidlig som mulig i inference, før sansynlighet og klassifisering. Håpet at det kunne gjøre inferencen raskere. (ikke bedre. ) 
-
-Konklusjon: Dette er ikke en god løsning for yolo eller andre one-stage arkitekturer. Boksenes posisjon og sansynlighet regnes ut parallellt. Det er derfor umulig å forkaste bokser basert på str og dim før sansynlighet og klassifikasjon regnes ut. Å forkaste boksene etter at sansynlighet regnes ut er ikke hensiktsmessig, fordi alle bokser med feil aspect ratio allerede har svært lav sansynlighet, og det er ikke raskere å forkaste basert på asect ratio enn basert på sansynlighet. Å forkaste basert på aspect ratio er kun aktuelt dersom algoritmen feilaktig setter høy sansynlighet på bokser med feil aspect ratio, men det skjer aldri. 
-
-Dersom modifisert inference skal implementeres må det gjøres med two-stage arkitekturer, som f.eks faster r-cnn. Der regnes boksenens pos og dim ut førsy, og deretter regnes klassifisering og sansynlighet ut for hver boks. Det er derfor mulig å forkaste bokser før sansynlighet og klassifissering.
-Spørsmålet blir da: Er dette tilstrekkelig, vil det gjøre arkitekturene raske nok for real-time prossessing?
-Først. Hvor raske er de by defoult: Faster R-CNN: På dyre GPU-er som Nvidia RTX: 5-10 fps. På vanlige pc-er med integrert gpu: 1 fps. Stage 1, altså CNN-et, feature mappet, backbone, krever mest regnekraft, si 60-70% (Opptil 90% for faster r-cnn, ifølge white paperet). Stage 2, proposal og classification, krever 30-40% (10%). Dersom vi kan forkastet 80% av boksene med neglisjerbar overhead (tilleggs-utregninger), som er sansynlig, kan vi potensielt gjøre algoritmen 40% * 80% = 32% (8%) raskere.
-Det er ikke i nærheten av nok. 
-Er det mulig å gjøre backbone raskere? Nei, det er uavhengig av domenekunnskapen, og uavhengig av hvor mange bokser som lages. Man må analysere bildet like mye uavhenegig av hvor mange bokser man skal teste. 
-Konklusjon: Two stage - detectors er uaktuelt. Modifisert inference er uaktuelt. 
-
-Derfor er ikke benchamarking.ipynb så aktuelt lenger, så har ikke laget en yolov5 versjon.
-
-## Runs
-
-### Observasjoner
-- v5 er mer confident enn v12. 
-- v12 predikerer mye smalere bokser fra start av.
-- Cropping gjør modellene dårligere (må være fordi himmelen er kontekst eller noe?)
-- Å øke oppløsning på treningsbildene 640 --> 1536 gjør ikke nødvendigvis modellen bedre på 640 test-bilder. Blir god på det man trener på. 
-
-
-### YOLO v12
-
-- train3_normal: small model with 250 epochs. Normal yolo. Basic yolo trained on this dataset
-- modified_loss_olaf_1: Loss function changed to penalize deviations from 0.25 aspect ratio in loss.py. Also, changed loss.py so that all boxes would be penalized, not only the ones making positive predictions. Tried linear, quadratic and qubic penalization with weighting up to 1000. Neglictable difference for all instances. This seems a bit weird to me, I want to explore modifying the cost function further. I am not confidemt that the changes in the code had the appropriate effect, so debugging and visualizing/printing intermediate results may be a good idea. Perhaps more epochs would make it better as well.
-- modified_augmentation_olaf. Endret box_candidates() i augmentation.py slik at bounding boxes som har aspect ratio > 0.25 rejectes. Sligthly more long and thin boxes, but not a lot. And worse performance overall. This makes sense, the effect of this is that the model gets worse at recognizing poles in augmented pictures, because the poles may be strecthed to be quadratic and the algorithm is not allowed to predict quadratic boxes. This is the cost we have to pay to avoid teaching the model that quadratic boxes is ok. In this instance, the tradeoff was clearly not worth it.
-
-train_lidar_1 - første trening med liten endring i loss funksjon
-
-- Plain small model
-- Plain medium model
-- Plain large model
-
-(Continue with best)
-
-- Cropped images
-- Loss function
-- pre trained vs not
-- Augmentation
-
-### Yolo v5
-
-- Plain small model
-- Plain medium model
-- Plain large model
-
-(Continue with best)
-
-- Cropped images
-- Different img hyperparameter
-
-### Yolov5 Autoanchors returned these anchors:
+### Yolov5 Autoanchors on RGB data returns these anchors:
 
 3,26 (width=3, height=26) → aspect ratio ≈ 1:8.7
 4,30 (width=4, height=30) → aspect ratio ≈ 1:7.5
@@ -122,23 +32,7 @@ train_lidar_1 - første trening med liten endring i loss funksjon
 21,73 (width=21, height=73) → aspect ratio ≈ 1:3.5
 16,140 (width=16, height=140) → aspect ratio ≈ 1:8.8
 41,129 (width=41, height=129) → aspect ratio ≈ 1:3.1
+WARNING: Extremely small objects found: 15 of 392 labels are <3 pixels in size
 
-
-Konklusjon: Ser bra ut, ingen grunn til å hardkode dem. 
-
-NB: Fikk: "WARNING: Extremely small objects found: 15 of 392 labels are <3 pixels in size"
-Er kanskje viktig å beholde høy oppløsing i trening (og inference?) for å kunne detekte små poles. 
-Juster hyperparameter img i yolov5. 
-Bildene våre har bredde = 1960 pixels. 
-
-
-## Generating synthetic images
-Possible approaches
-- GAN's. very good, but complicated, possibly not ideal for bounding boxes. 
-- Use dall-e 3. The problem here is that its difficoult to iterate on the same image: If you ask dall-e to generate an image of a pole with a box around, it does that. But if you ask it to generate a picture of a pole, and then ask it to generate the same picture only with a box around the pole, the box location is wrong. 
-Generate synthetic images with boxes around them: Detect box positions and create labels. use ai photoshop to remove box from picture. 
-This can be fully automated, and the chatgpt api is only 0.08 USD per image. 
-Conclusion: Not a good solution, as the bounding boxes are slightly wrong and will likely confuse the model more than help it. or so I think... It is a lot of work for something that may have no effect, or negative effect.
-- generate heatmap of box position. Generate a formula for pole height vs y-position in image. Paste pole on different backgrounds according to the heatmap and height function. Will look unnatural
 
 
