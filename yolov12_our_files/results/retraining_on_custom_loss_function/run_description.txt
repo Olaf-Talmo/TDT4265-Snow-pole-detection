@@ -1,0 +1,6 @@
+Run Description - 2025-04-30 10:55:28
+Dir Name:    retraining_on_custom_ar_3
+Model:       /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov12_our_files/yolov12/yolov12/runs/detect/train2/weights/best.pt
+
+Description:
+retraining on ar custom 3

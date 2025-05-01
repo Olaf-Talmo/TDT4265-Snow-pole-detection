@@ -1,0 +1,12 @@
+Run Description - 2025-04-24 15:39:04
+Dir Name:    v12_m_custom_loss_ar_and_reg_split_weights_3
+Model:       /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov12_our_files/yolov12/yolov12/runs/detect/train2/weights/best.pt
+
+Description:
+Using customized_loss_function.py with:
+area pen weight: 25
+ar pen weight: 5
+
+small yolov12 model
+350 epochs
+hyperparameters obtained from tuning

@@ -1,0 +1,6 @@
+Run Description - 2025-04-30 15:36:28
+Dir Name:    custom_ar_hyp_tuning_pt
+Model:       /home/omtalmo/Olaf_TTK4265/TDT4265-Snow-pole-detection/yolov12_our_files/yolov12/yolov12/runs/detect/train32/weights/best.pt
+
+Description:
+self explained
